@@ -1,0 +1,100 @@
+@font-face{font-family:'Orbit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/Orbit-Regular.woff2') format('woff2');font-weight:normal;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+
+/* 한글은 Orbit, 영문/기호는 Courier New */
+#app{
+  background:
+    linear-gradient(rgba(10,6,0,0.58), rgba(10,6,0,0.58)),
+    url('../asset/bg.jpg') top center/cover no-repeat fixed;
+  min-height:100vh;
+  font-family:'Courier New',monospace;
+  color:#ff8c2a;padding:20px;position:relative;overflow-x:hidden;
+}
+/* 한글 텍스트가 포함될 요소에만 Orbit 추가 */
+.ko-font{font-family:'Orbit','Courier New',monospace;}
+
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,140,42,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,140,42,0.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.content{position:relative;z-index:1;max-width:860px;margin:0 auto;}
+.hud-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+.title-main{font-size:10px;letter-spacing:2px;color:#ff8c2a;opacity:0.6;}
+.title-sub{font-size:17px;letter-spacing:2px;color:#FFE3C7;margin-top:4px;font-weight: 500;}
+.hud-status{text-align:right;font-size:9px;line-height:1.9;}
+.hud-status span{color:#ffb060;}
+.counter-line{opacity:1;letter-spacing:1px;}
+
+.input-area{margin-bottom:14px;}
+.prompt-line{font-size:9px;margin-bottom:6px;letter-spacing:1px;}
+.input-row{display:flex;border:0.5px solid rgba(255,140,42,1);background:rgba(255,140,42,0.04);}
+#textInput{
+  flex:1;background:transparent;border:none;outline:none;
+  color:#FFE3C7;font-size:14px;letter-spacing:1px;padding:11px 13px;
+  font-family:'Orbit','Courier New',monospace;
+}
+#textInput::placeholder{color:rgba(255,140,42,0.28);}
+.btn-transmit{
+  background:rgba(255,140,42,0.14);border:none;
+  border-left:0.5px solid rgba(255,140,42,0.4);
+  color:#ff8c2a;font-family:'Courier New',monospace;
+  font-size:9px;letter-spacing:2px;padding:0 16px;cursor:pointer;
+  transition:background 0.2s;white-space:nowrap;
+}
+.btn-transmit:hover{background:rgba(255,140,42,0.28);}
+.meta-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
+.signal-meta{font-size:9px;opacity:0.7;letter-spacing:1px;display:flex;gap:14px;}
+.signal-meta span{color:#ffb060;}
+.lang-badge{font-size:9px;letter-spacing:2px;padding:2px 8px;border:0.5px solid rgba(255,140,42,0.4);color:rgba(255,140,42,0.6);}
+
+/* viz layout */
+.viz-area{display:grid;grid-template-columns:200px 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:768px){
+  .viz-area{grid-template-columns:1fr;}
+  #radarCanvas{max-height:200px;object-fit:contain;}
+  .radar-panel{display:flex;flex-direction:column;}
+  .radar-panel canvas{max-height:200px;width:auto !important;margin:0 auto;}
+}
+.panel{border:0.5px solid rgba(255,140,42,0.7);padding:10px;background:rgba(255,140,42,0.02);}
+.panel-label{font-size:9px;letter-spacing:2px;opacity:0.7;margin-bottom:8px;display:flex;justify-content:space-between;}
+canvas{display:block;width:100%;}
+
+.btn-export{width:100%;background:rgba(255,140,42,0.1);border:0.5px solid rgba(255,140,42,0.45);color:#ffb060;font-family:'Courier New',monospace;font-size:10px;letter-spacing:2px;padding:11px;cursor:pointer;transition:background 0.2s;}
+.btn-export:hover:not(:disabled){background:rgba(255,140,42,0.25);}
+.btn-export:disabled{opacity:0.28;cursor:not-allowed;}
+.app-footer{
+  margin-top:12px;
+  text-align:right;
+  font-size:8px;
+  letter-spacing:1px;
+  color:rgba(255,140,42,0.45);
+}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal-box{background:#0d0700;border:0.5px solid rgba(255,140,42,0.4);width:100%;max-width:400px;max-height:92vh;overflow-y:auto;padding:20px;}
+.modal-title{font-size:11px;letter-spacing:3px;color:#ffb060;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;font-family:'Courier New',monospace;}
+.modal-close{background:none;border:none;color:#ff8c2a;font-size:16px;cursor:pointer;font-family:'Courier New',monospace;}
+.modal-section{margin-bottom:14px;}
+.modal-label{font-size:9px;letter-spacing:2px;opacity:0.45;margin-bottom:8px;color:#ff8c2a;}
+.ratio-row{display:flex;gap:8px;}
+.ratio-btn{flex:1;padding:8px;border:0.5px solid rgba(255,140,42,0.3);background:transparent;color:rgba(255,140,42,0.5);font-family:'Courier New',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;letter-spacing:1px;}
+.ratio-btn.active{background:rgba(255,140,42,0.18);color:#ffb060;border-color:rgba(255,140,42,0.65);}
+.bg-upload-area{border:0.5px dashed rgba(255,140,42,0.35);color:#ff8c2a;padding:14px;text-align:center;cursor:pointer;transition:background 0.2s;position:relative;}
+.bg-upload-area:hover{background:rgba(255,140,42,0.05);}
+.bg-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.bg-upload-text{font-size:9px;letter-spacing:1px;opacity:0.45;}
+.wave-control{margin-bottom:8px;}
+.wave-control:last-child{margin-bottom:0;}
+.wave-control label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:1px;color:rgba(255,176,96,0.9);margin-bottom:5px;}
+.wave-control input[type="range"]{width:100%;accent-color:#ff8c2a;background:transparent;}
+.color-control-row{display:flex;gap:16px;}
+.color-control{display:flex;align-items:center;gap:10px;}
+.color-control input[type="color"]{width:42px;height:28px;padding:0;border:0.5px solid rgba(255,140,42,0.45);background:transparent;cursor:pointer;}
+.color-control span{font-size:10px;letter-spacing:1px;color:rgba(255,176,96,0.9);}
+.modal-hint{font-size:9px;letter-spacing:1px;opacity:0.55;color:#ffb060;margin-bottom:8px;}
+.preview-canvas-wrap{border:0.5px solid rgba(255,140,42,0.2);}
+#previewCanvas{display:block;width:100%;height:auto;cursor:grab;touch-action:none;}
+#previewCanvas.dragging{cursor:grabbing;}
+.modal-actions{display:flex;gap:8px;margin-top:14px;}
+.btn-modal{flex:1;padding:10px;border:0.5px solid rgba(255,140,42,0.4);background:rgba(255,140,42,0.1);color:#ffb060;font-family:'Courier New',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;transition:background 0.2s;}
+.btn-modal:hover{background:rgba(255,140,42,0.25);}
+.btn-modal.primary{background:rgba(255,140,42,0.22);border-color:rgba(255,140,42,0.7);}
+.btn-modal.primary:hover{background:rgba(255,140,42,0.38);}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DEAR UNKOWN - PROJECT HAIL MARY TRANSLATOR</title>
+</head>
+<body>
+  <div id="app">
+    <div class="grid-bg"></div>
+    <div class="content">
+      <div class="hud-top">
+        <div>
+          <div class="title-main">PROJ. HAIL MARY</div>
+          <div class="title-sub">DEAR UNKOWN</div>
+        </div>
+        <div class="hud-status">
+          <div>&gt; STATUS: <span id="statusText">STANDBY</span></div>
+          <div>&gt; FREQ: <span id="freqText">—</span></div>
+          <div>&gt; SIGNAL: <span id="signalText">AWAITING</span></div>
+          <!-- <div class="counter-line">&gt; VISIT LOG: <span id="visitCountText">000</span> DATA SAVED</div> -->
+          <div class="counter-line">&gt; DATA: <span id="imageCountText">000</span> DATA ARCHIVED</div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="prompt-line">&gt; ENTER TEXT TO TRANSLATE</div>
+        <div class="input-row">
+          <input id="textInput" type="text" placeholder="문구를 입력하세요 / Enter text..." maxlength="80"/>
+          <button type="button" class="btn-transmit" id="transmitBtn">TRANSMIT</button>
+        </div>
+        <div class="meta-row">
+          <div class="signal-meta">CHARS: <span id="charCount">0</span>&nbsp; PHONEMES: <span id="phonemeCount">—</span></div>
+          <div class="lang-badge" id="langBadge">AUTO</div>
+        </div>
+      </div>
+
+      <div class="viz-area">
+        <div class="panel radar-panel">
+          <div class="panel-label"><span>&gt; RADAR / SCAN</span></div>
+          <canvas id="radarCanvas" width="200" height="200"></canvas>
+        </div>
+        <div class="panel">
+          <div class="panel-label"><span>&gt; OSCILLOSCOPE</span><span id="ampDisplay">AMP: —</span></div>
+          <canvas id="oscilloCanvas" width="500" height="200"></canvas>
+        </div>
+      </div>
+
+      <button type="button" class="btn-export" id="exportBtn" disabled>[ 단어 등록 — EXPORT SIGNAL POSTER ]</button>
+      <footer class="app-footer">SYSTEM OPERATOR: e.dot</footer>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay" style="display:none;" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-title" id="modalTitle">
+        <span>SIGNAL CARD EXPORT</span>
+        <button type="button" class="modal-close" id="modalCloseBtn" aria-label="닫기">✕</button>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">&gt; ASPECT RATIO</div>
+        <div class="ratio-row">
+          <button type="button" class="ratio-btn active" data-ratio="3:4">3 : 4</button>
+          <button type="button" class="ratio-btn" data-ratio="9:16">9 : 16</button>
+          <button type="button" class="ratio-btn" data-ratio="1:1">1 : 1</button>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">&gt; BACKGROUND IMAGE (OPTIONAL)</div>
+        <div class="bg-upload-area">
+          <input type="file" accept="image/*" id="bgUpload"/>
+          <div class="bg-upload-text" id="uploadText">클릭하여 배경 이미지 업로드 — JPG, PNG</div>
+        </div>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-label">&gt; PREVIEW</div>
+        <div class="modal-hint">배경 이미지는 드래그와 휠로 조절할 수 있습니다.</div>
+        <div class="preview-canvas-wrap">
+          <canvas id="previewCanvas"></canvas>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">&gt; COLOR</div>
+          <div class="color-control-row">
+            <div class="color-control">
+            <input id="accentColor" type="color" value="#ff8c2a" aria-label="포인트 컬러 선택"/>
+            <span id="accentColorValue">#FF8C2A</span>
+          </div>
+          <div class="color-control">
+            <input id="subColor" type="color" value="#ffe3c7" aria-label="서브 컬러 선택"/>
+            <span id="subColorValue">#FFE3C7</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-label">&gt; WAVE SETTINGS</div>
+        <div class="wave-control">
+          <label for="waveAmp">AMPLITUDE <span id="waveAmpValue">1.00</span></label>
+          <input id="waveAmp" type="range" min="0.3" max="2.5" step="0.05" value="1"/>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-modal" id="modalCancelBtn">CANCEL</button>
+        <button type="button" class="btn-modal primary" id="modalDownloadBtn">DOWNLOAD PNG</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
