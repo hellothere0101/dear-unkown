@@ -111,6 +111,8 @@ function updateWaveControlLabels(els) {
 function updatePosterControlLabels(els) {
   els.accentColorHex.value = state.posterAccentColor.toUpperCase();
   els.subColorHex.value = state.posterSubColor.toUpperCase();
+  els.accentColorChip.style.backgroundColor = state.posterAccentColor;
+  els.subColorChip.style.backgroundColor = state.posterSubColor;
 }
 
 function handleWaveControlChange(els) {
@@ -134,14 +136,6 @@ function normalizeHexColor(value) {
 }
 
 function bindHexColorInput(colorInput, hexInput, apply) {
-  const syncFromPicker = () => {
-    hexInput.value = colorInput.value.toUpperCase();
-    apply();
-  };
-
-  colorInput.addEventListener('input', syncFromPicker);
-  colorInput.addEventListener('change', syncFromPicker);
-
   const commitHexInput = () => {
     const normalized = normalizeHexColor(hexInput.value);
     if (!normalized) {
@@ -155,6 +149,78 @@ function bindHexColorInput(colorInput, hexInput, apply) {
 
   hexInput.addEventListener('change', commitHexInput);
   hexInput.addEventListener('blur', commitHexInput);
+}
+
+function bindColorWheel(els) {
+  const iroFactory = window.iro;
+  if (!iroFactory || !iroFactory.ColorPicker) return;
+
+  let activeKey = 'accent';
+  let isWheelOpen = false;
+  const activeClass = 'active';
+  const wheelSize = window.matchMedia('(max-width: 520px)').matches ? 230 : 180;
+  const picker = new iroFactory.ColorPicker('#colorWheelPicker', {
+    width: wheelSize,
+    color: state.posterAccentColor,
+    borderWidth: 1,
+    borderColor: '#4e2b0a',
+    layout: [
+      { component: iroFactory.ui.Wheel },
+      { component: iroFactory.ui.Slider, options: { sliderType: 'value' } },
+    ],
+  });
+
+  const setActiveTarget = (key) => {
+    activeKey = key;
+    const isAccent = key === 'accent';
+    els.accentColorTarget.classList.toggle(activeClass, isAccent);
+    els.subColorTarget.classList.toggle(activeClass, !isAccent);
+    els.accentColorTarget.setAttribute('aria-pressed', String(isAccent));
+    els.subColorTarget.setAttribute('aria-pressed', String(!isAccent));
+    picker.color.set(isAccent ? state.posterAccentColor : state.posterSubColor);
+  };
+
+  const setWheelOpen = (open) => {
+    isWheelOpen = open;
+    els.colorWheelWrap.classList.toggle('hidden', !open);
+  };
+
+  const applyPickedColor = (hex) => {
+    if (activeKey === 'accent') {
+      els.accentColor.value = hex;
+      state.posterAccentColor = hex;
+    } else {
+      els.subColor.value = hex;
+      state.posterSubColor = hex;
+    }
+    updatePosterControlLabels(els);
+    renderPosterToCanvas(els.previewCanvas);
+  };
+
+  picker.on('color:change', (color) => {
+    applyPickedColor(color.hexString.toUpperCase());
+  });
+
+  const toggleTarget = (key) => {
+    if (isWheelOpen && activeKey === key) {
+      setWheelOpen(false);
+      return;
+    }
+    setActiveTarget(key);
+    setWheelOpen(true);
+  };
+
+  els.accentColorTarget.addEventListener('click', () => toggleTarget('accent'));
+  els.subColorTarget.addEventListener('click', () => toggleTarget('sub'));
+
+  const syncWheelFromHex = () => {
+    picker.color.set(activeKey === 'accent' ? state.posterAccentColor : state.posterSubColor);
+  };
+  els.accentColorHex.addEventListener('blur', syncWheelFromHex);
+  els.subColorHex.addEventListener('blur', syncWheelFromHex);
+
+  setActiveTarget('accent');
+  setWheelOpen(false);
 }
 
 function bindPreviewBgDrag(els) {
@@ -276,9 +342,14 @@ function init() {
     bgUpload: /** @type {HTMLInputElement} */ ($('bgUpload')),
     ratioBtns: /** @type {NodeListOf<HTMLButtonElement>} */ (document.querySelectorAll('.ratio-btn')),
     accentColor: /** @type {HTMLInputElement} */ ($('accentColor')),
+    accentColorTarget: $('accentColorTarget'),
+    accentColorChip: $('accentColorChip'),
     accentColorHex: /** @type {HTMLInputElement} */ ($('accentColorHex')),
     subColor: /** @type {HTMLInputElement} */ ($('subColor')),
+    subColorTarget: $('subColorTarget'),
+    subColorChip: $('subColorChip'),
     subColorHex: /** @type {HTMLInputElement} */ ($('subColorHex')),
+    colorWheelWrap: $('colorWheelWrap'),
     waveAmp: /** @type {HTMLInputElement} */ ($('waveAmp')),
     waveAmpValue: $('waveAmpValue'),
     visitCountText: /** @type {HTMLElement|null} */ ($optional('visitCountText')),
@@ -328,6 +399,7 @@ function init() {
   updatePosterControlLabels(els);
   bindHexColorInput(els.accentColor, els.accentColorHex, () => handlePosterStyleControlChange(els));
   bindHexColorInput(els.subColor, els.subColorHex, () => handlePosterStyleControlChange(els));
+  bindColorWheel(els);
   bindPreviewBgDrag(els);
   initCounters(els);
 }

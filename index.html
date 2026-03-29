@@ -92,19 +92,28 @@
         <div class="modal-label">&gt; COLOR</div>
         <div class="color-control-row">
           <div class="color-control">
-            <label for="accentColor">ACCENT</label>
+            <button type="button" class="color-target-btn active" id="accentColorTarget" aria-pressed="true">
+              <span>ACCENT</span>
+              <span class="color-chip" id="accentColorChip"></span>
+            </button>
             <div class="color-input-wrap">
-              <input id="accentColor" type="color" value="#ff8c2a" aria-label="포인트 컬러 선택"/>
+              <input id="accentColor" type="color" value="#ff8c2a" aria-hidden="true" tabindex="-1"/>
               <input id="accentColorHex" type="text" value="#FF8C2A" maxlength="7" spellcheck="false" aria-label="포인트 컬러 HEX 입력"/>
             </div>
           </div>
           <div class="color-control">
-            <label for="subColor">SUB</label>
+            <button type="button" class="color-target-btn" id="subColorTarget" aria-pressed="false">
+              <span>SUB</span>
+              <span class="color-chip" id="subColorChip"></span>
+            </button>
             <div class="color-input-wrap">
-              <input id="subColor" type="color" value="#ffe3c7" aria-label="서브 컬러 선택"/>
+              <input id="subColor" type="color" value="#ffe3c7" aria-hidden="true" tabindex="-1"/>
               <input id="subColorHex" type="text" value="#FFE3C7" maxlength="7" spellcheck="false" aria-label="서브 컬러 HEX 입력"/>
             </div>
           </div>
+        </div>
+        <div class="color-wheel-wrap" id="colorWheelWrap">
+          <div id="colorWheelPicker" aria-label="컬러 휠 피커"></div>
         </div>
       </div>
 
@@ -123,6 +132,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
   <script type="module" src="/js/app.js"></script>
 </body>
 </html>

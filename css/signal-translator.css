@@ -95,11 +95,21 @@ canvas{display:block;width:100%;}
 .wave-control input[type="range"]{width:100%;accent-color:#ff8c2a;background:transparent;}
 .color-control-row{display:flex;gap:12px;}
 .color-control{flex:1;display:flex;flex-direction:column;gap:6px;}
-.color-control label{font-size:9px;letter-spacing:1px;color:rgba(255,176,96,0.8);}
+.color-target-btn{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  width:100%;padding:8px 10px;border:0.5px solid rgba(255,140,42,0.35);
+  background:rgba(255,140,42,0.04);color:rgba(255,176,96,0.85);
+  font-family:'Courier New',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;
+}
+.color-target-btn.active{
+  border-color:rgba(255,176,96,0.9);color:#ffcb9a;background:rgba(255,140,42,0.15);
+}
+.color-chip{
+  width:18px;height:18px;border:0.5px solid rgba(255,140,42,0.55);display:inline-block;
+}
 .color-input-wrap{display:flex;align-items:center;gap:8px;}
 .color-control input[type="color"]{
-  width:48px;height:34px;padding:0;border:0.5px solid rgba(255,140,42,0.45);
-  background:transparent;cursor:pointer;border-radius:2px;
+  position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;
 }
 .color-control input[type="text"]{
   width:100%;min-width:0;padding:8px 9px;border:0.5px solid rgba(255,140,42,0.45);
@@ -110,6 +120,13 @@ canvas{display:block;width:100%;}
   outline:none;border-color:rgba(255,176,96,0.95);
   box-shadow:0 0 0 1px rgba(255,140,42,0.2) inset;
 }
+.color-wheel-wrap{
+  margin-top:10px;padding:10px;border:0.5px solid rgba(255,140,42,0.3);
+  background:rgba(255,140,42,0.03);
+}
+.color-wheel-wrap.hidden{display:none;}
+#colorWheelPicker{display:flex;justify-content:center;}
+#colorWheelPicker canvas{max-width:100%;height:auto;}
 .modal-hint{font-size:9px;letter-spacing:1px;opacity:0.55;color:#ffb060;margin-bottom:8px;}
 .preview-canvas-wrap{border:0.5px solid rgba(255,140,42,0.2);}
 #previewCanvas{display:block;width:100%;height:auto;cursor:grab;touch-action:none;}
@@ -122,6 +139,8 @@ canvas{display:block;width:100%;}
 
 @media (max-width: 520px){
   .color-control-row{flex-direction:column;gap:10px;}
-  .color-control input[type="color"]{width:64px;height:42px;}
+  .color-target-btn{font-size:12px;padding:10px 11px;}
+  .color-chip{width:22px;height:22px;}
   .color-control input[type="text"]{font-size:12px;padding:10px 11px;}
+  .color-wheel-wrap{padding:8px;}
 }
