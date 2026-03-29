@@ -74,7 +74,7 @@ export function renderPosterToCanvas(canvas) {
   const accentStrong = rgba(accentRgb, 0.8);
   const accentMain = rgba(accentRgb, 0.65);
   const accentSoft = rgba(accentRgb, 0.5);
-  const accentFaint = rgba(accentRgb, 0.32);
+  const accentFaint = rgba(accentRgb, 0.4);
   const accentGrid = rgba(accentRgb, 0.055);
   const accentLine = rgba(accentRgb, 0.12);
   const subStrong = rgba(subRgb, 0.93);
@@ -159,7 +159,7 @@ export function renderPosterToCanvas(canvas) {
   px.textAlign = 'center';
   px.fillText(`"${state.currentText}"`, PW / 2, TY + fs);
 
-  const BY = PH - PH * 0.06;
+  const BY = PH - PH * 0.09;
   const now = new Date();
   const dateTimeText = new Intl.DateTimeFormat('ko-KR', {
     year: 'numeric',
@@ -176,5 +176,5 @@ export function renderPosterToCanvas(canvas) {
   px.fillText('DATA FROM', PAD, BY);
   px.font = `${Math.round(PW * 0.025)}px 'Courier New',monospace`;
   px.fillStyle = accentFaint;
-  px.fillText(dateTimeText, PAD, BY + Math.round(PW * 0.028));
+  px.fillText(dateTimeText, PAD, BY + Math.round(PW * 0.04));
 }

@@ -109,8 +109,8 @@ function updateWaveControlLabels(els) {
 }
 
 function updatePosterControlLabels(els) {
-  els.accentColorValue.textContent = state.posterAccentColor.toUpperCase();
-  els.subColorValue.textContent = state.posterSubColor.toUpperCase();
+  els.accentColorHex.value = state.posterAccentColor.toUpperCase();
+  els.subColorHex.value = state.posterSubColor.toUpperCase();
 }
 
 function handleWaveControlChange(els) {
@@ -124,6 +124,37 @@ function handlePosterStyleControlChange(els) {
   state.posterSubColor = els.subColor.value;
   updatePosterControlLabels(els);
   renderPosterToCanvas(els.previewCanvas);
+}
+
+function normalizeHexColor(value) {
+  const raw = String(value || '').trim().toUpperCase();
+  const withHash = raw.startsWith('#') ? raw : `#${raw}`;
+  if (/^#[0-9A-F]{6}$/.test(withHash)) return withHash;
+  return null;
+}
+
+function bindHexColorInput(colorInput, hexInput, apply) {
+  const syncFromPicker = () => {
+    hexInput.value = colorInput.value.toUpperCase();
+    apply();
+  };
+
+  colorInput.addEventListener('input', syncFromPicker);
+  colorInput.addEventListener('change', syncFromPicker);
+
+  const commitHexInput = () => {
+    const normalized = normalizeHexColor(hexInput.value);
+    if (!normalized) {
+      hexInput.value = colorInput.value.toUpperCase();
+      return;
+    }
+    colorInput.value = normalized;
+    hexInput.value = normalized;
+    apply();
+  };
+
+  hexInput.addEventListener('change', commitHexInput);
+  hexInput.addEventListener('blur', commitHexInput);
 }
 
 function bindPreviewBgDrag(els) {
@@ -245,9 +276,9 @@ function init() {
     bgUpload: /** @type {HTMLInputElement} */ ($('bgUpload')),
     ratioBtns: /** @type {NodeListOf<HTMLButtonElement>} */ (document.querySelectorAll('.ratio-btn')),
     accentColor: /** @type {HTMLInputElement} */ ($('accentColor')),
-    accentColorValue: $('accentColorValue'),
+    accentColorHex: /** @type {HTMLInputElement} */ ($('accentColorHex')),
     subColor: /** @type {HTMLInputElement} */ ($('subColor')),
-    subColorValue: $('subColorValue'),
+    subColorHex: /** @type {HTMLInputElement} */ ($('subColorHex')),
     waveAmp: /** @type {HTMLInputElement} */ ($('waveAmp')),
     waveAmpValue: $('waveAmpValue'),
     visitCountText: /** @type {HTMLElement|null} */ ($optional('visitCountText')),
@@ -295,9 +326,8 @@ function init() {
   els.accentColor.value = state.posterAccentColor;
   els.subColor.value = state.posterSubColor;
   updatePosterControlLabels(els);
-  [els.accentColor, els.subColor].forEach((el) => {
-    el.addEventListener('input', () => handlePosterStyleControlChange(els));
-  });
+  bindHexColorInput(els.accentColor, els.accentColorHex, () => handlePosterStyleControlChange(els));
+  bindHexColorInput(els.subColor, els.subColorHex, () => handlePosterStyleControlChange(els));
   bindPreviewBgDrag(els);
   initCounters(els);
 }

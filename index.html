@@ -90,14 +90,20 @@
 
       <div class="modal-section">
         <div class="modal-label">&gt; COLOR</div>
-          <div class="color-control-row">
-            <div class="color-control">
-            <input id="accentColor" type="color" value="#ff8c2a" aria-label="포인트 컬러 선택"/>
-            <span id="accentColorValue">#FF8C2A</span>
+        <div class="color-control-row">
+          <div class="color-control">
+            <label for="accentColor">ACCENT</label>
+            <div class="color-input-wrap">
+              <input id="accentColor" type="color" value="#ff8c2a" aria-label="포인트 컬러 선택"/>
+              <input id="accentColorHex" type="text" value="#FF8C2A" maxlength="7" spellcheck="false" aria-label="포인트 컬러 HEX 입력"/>
+            </div>
           </div>
           <div class="color-control">
-            <input id="subColor" type="color" value="#ffe3c7" aria-label="서브 컬러 선택"/>
-            <span id="subColorValue">#FFE3C7</span>
+            <label for="subColor">SUB</label>
+            <div class="color-input-wrap">
+              <input id="subColor" type="color" value="#ffe3c7" aria-label="서브 컬러 선택"/>
+              <input id="subColorHex" type="text" value="#FFE3C7" maxlength="7" spellcheck="false" aria-label="서브 컬러 HEX 입력"/>
+            </div>
           </div>
         </div>
       </div>
