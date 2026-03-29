@@ -11,6 +11,11 @@ function $(id) {
   return el;
 }
 
+/** HUD에서 숨긴 경우 없을 수 있음 — 없으면 방문 카운터만 생략 */
+function $optional(id) {
+  return document.getElementById(id);
+}
+
 const COUNTER_TYPES = {
   visits: 'visits',
   images: 'images',
@@ -46,6 +51,7 @@ async function getRemoteCounter(key) {
 }
 
 async function updateCounterText(el, key, shouldIncrement) {
+  if (!el) return;
   try {
     let count;
     if (shouldIncrement) {
@@ -210,8 +216,10 @@ function downloadPoster(els) {
 
 function initCounters(els) {
   const hasCountedVisit = sessionStorage.getItem(SESSION_VISIT_KEY) === '1';
-  void updateCounterText(els.visitCountText, COUNTER_TYPES.visits, !hasCountedVisit);
-  if (!hasCountedVisit) sessionStorage.setItem(SESSION_VISIT_KEY, '1');
+  if (els.visitCountText) {
+    void updateCounterText(els.visitCountText, COUNTER_TYPES.visits, !hasCountedVisit);
+    if (!hasCountedVisit) sessionStorage.setItem(SESSION_VISIT_KEY, '1');
+  }
   void updateCounterText(els.imageCountText, COUNTER_TYPES.images, false);
 }
 
@@ -242,7 +250,7 @@ function init() {
     subColorValue: $('subColorValue'),
     waveAmp: /** @type {HTMLInputElement} */ ($('waveAmp')),
     waveAmpValue: $('waveAmpValue'),
-    visitCountText: $('visitCountText'),
+    visitCountText: /** @type {HTMLElement|null} */ ($optional('visitCountText')),
     imageCountText: $('imageCountText'),
   };
 
