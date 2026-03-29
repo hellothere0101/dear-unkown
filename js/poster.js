@@ -104,12 +104,12 @@ export function renderPosterToCanvas(canvas) {
 
   const PAD = PW * 0.1;
 
-  const fs1 = Math.round(PW * 0.018);
+  const fs1 = Math.round(PW * 0.03);
   px.font = `${fs1}px 'Courier New',monospace`;
   px.fillStyle = accentSoft;
   px.textAlign = 'left';
   px.fillText('HAIL MARY PROJECT', PAD, PH * 0.06);
-  const fs2 = Math.round(PW * 0.03);
+  const fs2 = Math.round(PW * 0.035);
   px.font = `${fs2}px 'Courier New',monospace`;
   px.fillStyle = rgba(subRgb, 0.8);
   px.fillText('DEAR UNKOWN.', PAD, PH * 0.06 + fs2 * 1.3);
@@ -149,7 +149,7 @@ export function renderPosterToCanvas(canvas) {
   const TY = wcy + WH / 2 + PH * 0.06;
   const maxW = PW - PAD * 2.2;
   const fontFamily = state.currentLang === 'ko' ? "'Orbit','Courier New',monospace" : "'Courier New',monospace";
-  let fs = Math.round(PW * 0.04);
+  let fs = Math.round(PW * 0.035);
   px.font = `${fs}px ${fontFamily}`;
   while (px.measureText(`"${state.currentText}"`).width > maxW && fs > 13) {
     fs -= 2;
