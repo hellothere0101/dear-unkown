@@ -1,9 +1,13 @@
+import { inject } from '@vercel/analytics';
 import '../css/signal-translator.css';
 import { state } from './state.js';
 import { detectLang, textToFeatures, generateWave, generateRadarDots } from './signal-engine.js';
 import { createRadarDrawer } from './radar-renderer.js';
 import { createOscilloDrawer } from './oscillo-renderer.js';
 import { getBgCropMetrics, getRatioDims, renderPosterToCanvas } from './poster.js';
+
+// Initialize Vercel Web Analytics
+inject();
 
 function $(id) {
   const el = document.getElementById(id);
