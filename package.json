@@ -10,5 +10,8 @@
   "devDependencies": {
     "vite": "^6.2.0",
     "vite-plugin-singlefile": "^2.3.2"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
   }
 }
